@@ -1,0 +1,25 @@
+{
+  "name": "ten-ten-computers-using-vite",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.89.2",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@supabase/supabase-js": "^2.52.1",
+    "bootstrap": "^5.3.6",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0"
+  },
+  "description": ""
+}

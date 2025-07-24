@@ -1,0 +1,127 @@
+
+body, html, button {
+  width: 100%;
+  height: 100%;
+  font-family: 'Montserrat', sans-serif;
+  background: none;
+}
+
+/* GENERAL STYLES */
+h1 {
+  font-size: 3rem;
+  color: rgb(240, 240, 240);
+}
+
+.btn {
+  font-weight: 700;
+  border-radius: 300px;
+}
+
+hr {
+  border-color: black;
+  border-width: 3px;
+  max-width: 65px;
+}
+
+/* STAR RATING STYLES */
+.star-rating {
+  font-size: 1.5em;
+  color: #f5a623;
+}
+
+.star-rating label {
+  cursor: pointer;
+}
+
+#star-rating input {
+  display: none;
+}
+
+#star-rating label {
+  font-size: 2em;
+  color: #ccc;
+}
+
+#star-rating input:checked ~ label {
+  color: #f5a623;
+}
+
+/* SECTION BACKGROUNDS */
+#welcome {
+  background-size: 100% auto;;
+  padding: 5rem 0;
+  position: relative;
+  height: -40vh;
+  z-index: 1;
+}
+#welcome::before {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 60%;
+  background: rgba(0,0,0,0.6);
+  z-index: -1;
+}
+
+#hero {
+  background-size: cover;
+  position: relative;
+  padding: 5rem 0;
+  width: 100%;
+  background-repeat: no-repeat;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  
+  
+}
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  filter: brightness(20%);
+  background: rgba(0,0,0,0.4);
+  z-index: -1;
+}
+
+#about {
+  position: relative;
+  background: url('klim-musalimov-Q_31jEQTE30-unsplash.jpg') no-repeat center center;
+  background-size: cover;
+  padding: 5rem 0rem;
+  z-index: 1;
+  color: #ffffff;
+  
+}
+
+#about::before {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+#about p, #about h2, #about h3, #about li {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+#review-form {
+  background: url('') no-repeat center center;
+  background-size: cover;
+  padding: 5rem 0;
+}
+
+#reviews-display {
+  background-color: #f8f9fa;
+  padding: 5rem 0;
+  background: url('') no-repeat center center;
+  background-size: cover;
+  padding: 5rem 0;
+}
+
+.catalogue-img {
+  width: 100%;              
+  height: 250px;           
+  object-fit: cover;        
+  object-position: center;  
+  border-radius: 5px;
+}

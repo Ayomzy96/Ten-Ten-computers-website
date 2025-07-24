@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Laptop Product</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-dark text-white">
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">📦 Upload Laptop Product</h2>
+    <form id="uploadForm" class="bg-secondary p-4 rounded">
+      <div class="mb-3">
+        <label class="form-label">Model</label>
+        <input type="text" class="form-control" id="model" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Specifications</label>
+        <textarea class="form-control" id="specs" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input type="text" class="form-control" id="price" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input type="text" class="form-control" id="phone" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="status" required>
+          <option value="available">Available</option>
+          <option value="sold">Sold</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Upload Images (max 3)</label>
+        <input type="file" id="images" accept="image/*" multiple class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-light">Upload Product</button>
+    </form>
+
+    <div id="statusMsg" class="mt-4 text-center"></div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://kdijhjnkxkrfjlyavcoe.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkaWpoam5reGtyZmpseWF2Y29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMDcyNDMsImV4cCI6MjA2Njc4MzI0M30.0EpnU9W3_O0b94Twy0FXdgtT49jByEO7tx2et-nQySA'
+    );
+
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const model = document.getElementById('model').value.trim();
+      const specs = document.getElementById('specs').value.trim();
+      const price = document.getElementById('price').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const status = document.getElementById('status').value.trim();
+      const files = document.getElementById('images').files;
+      const msg = document.getElementById('statusMsg');
+      msg.innerHTML = '';
+
+      if (files.length === 0 || files.length > 3) {
+        msg.innerHTML = `<div class="text-warning">⚠ Please upload between 1 to 3 images.</div>`;
+        return;
+      }
+
+      const imageUrls = [];
+
+      for (const file of files) {
+        const filePath = `catalogues/${model.replace(/\s+/g, '_')}/${Date.now()}_${file.name}`;
+        const { data: uploadData, error: uploadError } = await supabase
+          .storage
+          .from('product-images')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          msg.innerHTML = `<div class="text-danger">❌ Upload error: ${uploadError.message}</div>`;
+          return;
+        }
+
+        const { data: urlData } = supabase
+          .storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        imageUrls.push(urlData.publicUrl);
+      }
+
+      const { error: insertError } = await supabase
+        .from('products')
+        .insert([{
+          model,
+          specs,
+          price,
+          phone,
+          status,
+          images: imageUrls
+        }]);
+
+      if (insertError) {
+        msg.innerHTML = `<div class="text-danger">❌ Insert error: ${insertError.message}</div>`;
+      } else {
+        msg.innerHTML = `<div class="text-success fw-bold">✅ Product uploaded successfully!</div>`;
+        e.target.reset();
+      }
+    });
+  </script>
+</body>
+</html>

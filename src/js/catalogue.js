@@ -27,7 +27,7 @@ const products = [
   {
     model: "Lenovo Thinkpad",
     specs: "Intel i5 (6th generation) | Webcam| 8GB RAM | 256GB SSD | Windows 10",
-    price: "₦100,000",
+    price: "₦200,000",
     phone: "+2348165773599",
     status: "available",
     images: [
@@ -41,7 +41,7 @@ const products = [
   {
     model: "Acer Travelmate 5744",
     specs: "Intel i5 | Webcam | 8GB RAM | 320GB HDD | Windows 10",
-    price: "₦100,000",
+    price: "₦120,000",
     phone: "+2348165773599",
     status: "sold",
     images: [

@@ -1,25 +1,9 @@
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
 
-export default {
-  root: resolve(__dirname, 'src'),
+export default defineConfig({
+  root: 'src', // Source folder with index.html
   build: {
-    outDir: '../dist',
+    outDir: '../dist', // Output to project root/dist
     emptyOutDir: true,
   },
-  server: {
-    port: 8080
-  },
-  // Optional: Silence Sass deprecation warnings. See note below.
-  css: {
-     preprocessorOptions: {
-        scss: {
-          silenceDeprecations: [
-            'import',
-            'mixed-decls',
-            'color-functions',
-            'global-builtin',
-          ],
-        },
-     },
-  },
-}
+});

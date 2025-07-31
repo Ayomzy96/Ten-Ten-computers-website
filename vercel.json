@@ -6,15 +6,15 @@
   "rewrites": [
     {
       "source": "/catalogue",
-      "destination": "./catalogue.html"
+      "destination": "/catalogue.html"
     },
     {
       "source": "/add-product",
-      "destination": "./add-product.html"
+      "destination": "/add-product.html"
     },
     {
       "source": "/(.*)",
-      "destination": "./index.html"
+      "destination": "/index.html"
     }
   ],
   "builds": [

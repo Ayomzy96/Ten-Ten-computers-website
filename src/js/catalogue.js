@@ -1,106 +1,136 @@
-const products = [
-  {
-    model: "Dell Latitude",
-    specs: "Intel i5 | Webcam | 8GB RAM | 320GB HDD | Windows 10",
-    price: "₦160,000",
-    phone: "+2348165773599",
-    status: "available",
-    images: [
-      "/catalogues/Dellatitude/IMG-20250228-WA0008.jpg",
-      "/catalogues/Dellatitude/IMG-20250513-WA0006.jpg",
-      "/catalogues/Dellatitude/IMG-20250513-WA0005.jpg",
-    ]
-  },
-  
-  {
-    model: "Toshiba",
-    specs: "Intel i3 | Webcam| 8GB RAM | 320GB HDD | Windows 10",
-    price: "₦100,000",
-    phone: "+2348165773599",
-    status: "available",
-    images: [
-      "/catalogues/toshiba/IMG-20250504-WA0048.jpg",
-      "/catalogues/toshiba/IMG-20250504-WA0022.jpg",
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-    ]
-  },
-  {
-    model: "Lenovo Thinkpad",
-    specs: "Intel i5 (6th generation) | Webcam| 8GB RAM | 256GB SSD | Windows 10",
-    price: "₦200,000",
-    phone: "+2348165773599",
-    status: "available",
-    images: [
-      "/catalogues/Lenovothinkpad/Lenovothinkpad.jpg",
-      "/catalogues/Lenovothinkpad/Lenovothinkpad(2).jpg",
-      "/catalogues/Lenovothinkpad/Lenovothinkpad(3).jpg",
-      "/catalogues/Lenovothinkpad/Lenovothinkpad(4).jpg",
-    ]
-  },
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
+console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
+console.log("Supabase Key:", import.meta.env.VITE_SUPABASE_KEY);
 
-  {
-    model: "Acer Travelmate 5744",
-    specs: "Intel i5 | Webcam | 8GB RAM | 320GB HDD | Windows 10",
-    price: "₦120,000",
-    phone: "+2348165773599",
-    status: "sold",
-    images: [
-      "/catalogues/Acertravelmate/IMG-20250504-WA0046.jpg",
-      "/catalogues/Acertravelmate/IMG-20250504-WA0043.jpg",
-  
-    ]
-  },
-];
 
-function renderCatalogue() {
-  const grid = document.getElementById("productGrid");
-  grid.innerHTML = "";
+// Fetch products from Supabase
+async function fetchProducts() {
+  try {
+    const { data, error } = await supabase
+      .from('laptops')
+      .select('*');
+    if (error) {
+      console.error('Supabase fetch error:', error);
+      throw new Error(`Failed to fetch products: ${error.message} (Code: ${error.code})`);
+    }
+    console.log('Fetched products:', data);
+    if (!data || data.length === 0) {
+      console.warn('No products found in the database.');
+    }
+    displayProducts(data);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    const catalog = document.getElementById('product-catalog');
+    catalog.innerHTML = `<p class="text-danger text-center">Error loading products: ${error.message}</p>`;
+  }
+}
+
+// Display products in the catalog
+function displayProducts(products) {
+  const catalog = document.getElementById('product-catalog');
+  catalog.innerHTML = '';
+
+  if (!products || products.length === 0) {
+    catalog.innerHTML = '<p class="text-center text-light">No products available.</p>';
+    return;
+  }
 
   products.forEach((product, index) => {
-    const carouselId = `carousel${index}`;
-    const carouselItems = product.images.map((img, i) => `
-      <div class="carousel-item ${i === 0 ? "active" : ""}">
-        <img src="${img}" class="d-block w-100 catalogue-img" alt="${product.model}">
+    const imageUrls = Array.isArray(product.image_urls) && product.image_urls.length > 0 
+      ? product.image_urls.map(url => url.replace(/\/+/g, '/')).filter(isValidUrl)
+      : ['https://via.placeholder.com/300'];
+    const phoneNumber = product.phone_number && isValidPhone(product.phone_number) 
+      ? product.phone_number 
+      : '#';
+    const whatsappNumber = product.whatsapp_number && isValidWhatsAppNumber(product.whatsapp_number) 
+      ? product.whatsapp_number 
+      : '#';
+    const isInStock = product.is_in_stock !== false;
+
+    console.log(`Rendering product ${index + 1}:`, {
+      model: product.model,
+      imageUrls,
+      isInStock,
+      phoneNumber,
+      whatsappNumber
+    });
+
+    const carouselItems = imageUrls.map((url, imgIndex) => `
+      <div class="carousel-item ${imgIndex === 0 ? 'active' : ''}">
+        <img src="${url}" alt="${product.model || 'Laptop'} Image ${imgIndex + 1}" class="d-block w-100" loading="lazy">
       </div>
-    `).join("");
+    `).join('');
 
-    const isSold = product.status.toLowerCase() === "sold";
-    const statusBadge = isSold
-      ? `<span class="badge bg-danger">SOLD</span>`
-      : `<span class="badge bg-success">Available</span>`;
-
-    const cardClasses = `card bg-secondary text-white h-100 shadow ${isSold ? 'opacity-50' : ''}`;
-
-    const productHTML = `
-      <div class="col-md-4">
-        <div class="${cardClasses}">
-          <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">${carouselItems}</div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
-              <span class="carousel-control-next-icon"></span>
-            </button>
+    const productCard = `
+      <div class="product-card ${isInStock ? '' : 'out-of-stock'} animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s;">
+        <div id="carousel-${index}" class="carousel slide carousel-container" data-bs-ride="carousel" data-bs-interval="4000">
+          <div class="carousel-inner">
+            ${carouselItems}
           </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="card-title fw-bold mb-0">${product.model}</h5>
-              ${statusBadge}
-            </div>
-            <p class="card-text">${product.specs}</p>
-            <p class="card-text fw-bold">${product.price}</p>
-            <div class="d-flex justify-content-between">
-              <a href="tel:${product.phone}" class="btn btn-light btn-sm ${isSold ? 'disabled' : ''}">Call</a>
-              <a href="https://wa.me/${product.phone.replace('+', '')}" class="btn btn-success btn-sm ${isSold ? 'disabled' : ''}">WhatsApp</a>
-            </div>
+          ${imageUrls.length > 1 ? `
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${index}" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-${index}" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          ` : ''}
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">${product.model || 'Unknown Model'}</h3>
+          <p class="product-specs">${product.specifications || 'No specifications available'}</p>
+          <p class="product-price">$${product.price || 'N/A'}</p>
+          <div class="contact-links">
+            <a href="${isInStock && phoneNumber !== '#' ? `tel:${phoneNumber}` : '#'}" class="phone-link ${isInStock ? '' : 'disabled'}">Call Us</a>
+            <a href="${isInStock && whatsappNumber !== '#' ? `https://wa.me/${whatsappNumber}` : '#'}" class="whatsapp-link ${isInStock ? '' : 'disabled'}" target="_blank">WhatsApp</a>
           </div>
+          ${isInStock ? '' : '<span class="out-of-stock-label">Out of Stock</span>'}
         </div>
       </div>
     `;
+    catalog.insertAdjacentHTML('beforeend', productCard);
+  });
 
-    grid.insertAdjacentHTML("beforeend", productHTML);
+  // Initialize Bootstrap carousels for automatic slideshow
+  initializeCarousels();
+}
+
+// Initialize all carousels
+function initializeCarousels() {
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    new bootstrap.Carousel(carousel, {
+      interval: 4000,
+      ride: 'carousel'
+    });
   });
 }
 
-document.addEventListener("DOMContentLoaded", renderCatalogue);
+// Helper function to validate URLs
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+// Helper function to validate phone numbers
+function isValidPhone(phone) {
+  return /^\+?\d{10,15}$/.test(phone);
+}
+
+// Helper function to validate WhatsApp numbers
+function isValidWhatsAppNumber(phone) {
+  return /^\d{10,15}$/.test(phone);
+}
+
+// Load products on page load
+document.addEventListener('DOMContentLoaded', fetchProducts);

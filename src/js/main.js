@@ -1,13 +1,42 @@
-// Lazy load background images
-import { lazyLoadBackgrounds } from './lazyload-bg.js';
 import { createClient } from '@supabase/supabase-js';
 import.meta.env;
 
 document.addEventListener('DOMContentLoaded', () => {
-  lazyLoadBackgrounds();
-  fetchReviews(); // Load reviews on page load
+  // Lazy load background images
+  const sections = document.querySelectorAll('.section-bg');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+            const bg = section.getAttribute('data-bg');
+            if (bg) {
+              section.style.backgroundImage = bg;
+            }
+            observer.unobserve(section); // Load only once
+          }
+        });
+      },
+      { rootMargin: '100px' } // Load 100px before entering viewport
+    );
+
+    sections.forEach(section => observer.observe(section));
+  } else {
+    // Fallback for older browsers (rare in 2025)
+    sections.forEach(section => {
+      const bg = section.getAttribute('data-bg');
+      if (bg) {
+        section.style.backgroundImage = bg;
+      }
+    });
+  }
+
+  // Fetch reviews
+  fetchReviews();
 });
 
+// Initialize Supabase client
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_KEY
@@ -74,12 +103,12 @@ async function fetchReviews() {
     card.className = 'bg-dark p-3 my-2 rounded text-white border';
 
     card.innerHTML = `
-  <h5>${review.name} <span class="text-warning">${'★'.repeat(review.rating)}</span></h5>
-  <p>${review.review}</p>
-  <small class="text-white">
-  ${new Date(review.created_at).toLocaleDateString()} at ${new Date(review.created_at).toLocaleTimeString()}
-  </small>
-`;
+      <h5>${review.name} <span class="text-warning">${'★'.repeat(review.rating)}</span></h5>
+      <p>${review.review}</p>
+      <small class="text-white">
+        ${new Date(review.created_at).toLocaleDateString()} at ${new Date(review.created_at).toLocaleTimeString()}
+      </small>
+    `;
     list.appendChild(card);
   });
 }

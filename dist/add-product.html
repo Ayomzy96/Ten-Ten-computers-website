@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ten-Ten Computers - Add Product</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .add-product-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .form-control, .form-check-input {
+      margin-bottom: 1rem;
+    }
+    .alert {
+      display: none;
+    }
+    .alert.show {
+      display: block;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/add-product-CwP1RLs4.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-KnZ4zc_j.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-BKL3Dppp.css">
+</head>
+<body class="bg-dark text-white">
+  <!-- NAVIGATION -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="./index.html">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="./catalogue.html">Catalogue and Pricing</a>
+          <a class="nav-link active" aria-current="page" href="./add-product.html">Add Product</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Contact us 👇
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="https://wa.me/2348165773599">Whatsapp</a></li>
+              <li><a class="dropdown-item" href="tel:+2348165773599">Call Us ☎</a></li>
+              <li><a class="dropdown-item" href="mailto:abrahamayomide117@gmail.com">E-mail ✉</a></li>
+            </ul>
+          </li>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ADD PRODUCT SECTION -->
+  <section class="add-product-container">
+    <h2 class="mb-4 text-center fw-bold display-5">Add New Laptop</h2>
+    <div id="alert-message" class="alert" role="alert"></div>
+    <form id="add-product-form">
+      <div class="mb-3">
+        <label for="model" class="form-label">Model</label>
+        <input type="text" class="form-control" id="model" required>
+      </div>
+      <div class="mb-3">
+        <label for="specifications" class="form-label">Specifications</label>
+        <textarea class="form-control" id="specifications" rows="4" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price ($)</label>
+        <input type="number" class="form-control" id="price" step="0.01" min="0" required>
+      </div>
+      <div class="mb-3">
+        <label for="image-urls" class="form-label">Image URLs (comma-separated)</label>
+        <textarea class="form-control" id="image-urls" rows="3" placeholder="e.g., https://example.com/image1.jpg,https://example.com/image2.jpg"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="phone-number" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="phone-number" placeholder="+1234567890" required>
+      </div>
+      <div class="mb-3">
+        <label for="whatsapp-number" class="form-label">WhatsApp Number (10-15 digits, no +)</label>
+        <input type="text" class="form-control" id="whatsapp-number" placeholder="1234567890" required>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="is-in-stock" checked>
+        <label class="form-check-label" for="is-in-stock">In Stock</label>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Add Product</button>
+    </form>
+    <a href="./catalogue.html" class="btn btn-secondary w-100 mt-3">Back to Catalogue</a>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

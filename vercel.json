@@ -20,13 +20,10 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/node",
+      "use": "@vercel/static",
       "config": {
-        "includeFiles": [
-          "dist/**"
-        ]
+        "distDir": "dist"
       }
     }
-  ],
-  "outputDirectory": "dist"
+  ]
 }

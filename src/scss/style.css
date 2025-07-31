@@ -142,14 +142,18 @@ body {
 
 /* Product Card */
 .product-card {
-  background: rgba(255, 255, 255, 0.05); /* Glassmorphism effect */
+  background: rgba(255, 255, 255, 0.05); /* Glassmorphism */
   backdrop-filter: blur(10px);
   border-radius: 8px;
   padding: 10px;
-  margin-bottom: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;       /* Make sure it fills the grid cell */
+  height: 100%;      /* Optional: ensure equal height for all cards */
+  display: flex;     /* Optional: to align content */
+  flex-direction: column;
 }
+
 
 .product-card:hover {
   transform: translateY(-5px);
@@ -264,11 +268,9 @@ body {
 /* Catalog Container */
 .catalog-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Increased min width for spacing */
-  gap: 20px; /* Slightly larger gap */
-  padding: 20px;
-  max-width: 1200px; /* Constrain width for larger screens */
-  margin: 0 auto; /* Center the grid */
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 15px;
+  padding: 10px;
 }
 
 /* Review Form and Display */
@@ -280,13 +282,14 @@ body {
 /* Responsive Design */
 @media (max-width: 992px) {
   .catalog-container {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for tablets */
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     padding: 15px;
+    max-width: 100%;
   }
 
   .carousel-container {
-    max-width: 220px;
+    max-width: 100px;
   }
 
   .carousel-item img {
@@ -338,10 +341,11 @@ body {
   }
 
   .catalog-container {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 2fr)); /* Single column on small screens */
-    gap: 10px;
-    padding: 10px;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
+  gap: 15px;
+  padding: 10px;
+}
 
   .carousel-container {
     max-width: 180px;

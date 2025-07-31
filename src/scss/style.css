@@ -10,19 +10,23 @@ body {
 
 /* Navbar */
 .navbar-dark {
-  background-color: #1e1e1e; /* Darker navbar */
+  background-color: #1e1e1e; /* Fallback color */
+  background-image: url('https://kdijhjnkxkrfjlyavcoe.supabase.co/storage/v1/object/public/images/navbar-bg.jpg'); /* Navbar background image */
+  background-size: cover; /* Flexible, fills navbar */
+  background-position: center;
+  background-repeat: no-repeat;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 10px 0; /* Further reduced padding */
+  padding: 10px 0;
 }
 
 .navbar-brand {
-  font-size: 1.5rem; /* Smaller */
+  font-size: 1.5rem;
   font-weight: 700;
   color: #00ff88 !important; /* Vibrant green brand */
 }
 
 .nav-link {
-  font-size: 0.9rem; /* Smaller font */
+  font-size: 0.9rem;
   font-weight: 500;
   color: #e0e0e0 !important;
   transition: color 0.3s ease;
@@ -55,19 +59,83 @@ body {
 }
 
 .section-bg {
-  background-size: cover;
+  position: relative; /* For pseudo-element positioning */
+  min-height: 50vh; /* Flexible height */
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: contain; /* Default for sections with data-bg */
   background-position: center;
-  min-height: 100vh;
-  padding-top: 60px; /* Reduced for sticky navbar */
+  background-repeat: no-repeat;
+}
+
+/* Welcome Section */
+#welcome {
+  min-height: 40vh; /* Smaller for welcome section */
+}
+
+#welcome::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain; /* Flexible, full image visible */
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(70%); /* Reduce background brightness */
+  z-index: 1;
+}
+
+#welcome .container {
+  position: relative;
+  z-index: 2; /* Text above background */
+}
+
+/* Hero Section */
+#hero {
+  min-height: 50vh; /* Slightly larger for impact */
+  background-size: cover; /* Flexible, fills hero section */
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* Flexible, fills hero section */
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(70%); /* Reduce background brightness */
+  z-index: 1;
+}
+
+#hero .container {
+  position: relative;
+  z-index: 2; /* Text above background */
+}
+
+/* About Section */
+#about {
+  min-height: 50vh;
+}
+
+#about .container {
+  position: relative;
+  z-index: 2; /* Text above background */
 }
 
 /* Catalogue Section */
 #catalogue h2 {
-  font-size: 2rem; /* Smaller heading */
+  font-size: 2rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 25px; /* Reduced margin */
+  margin-bottom: 25px;
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -76,9 +144,9 @@ body {
 .product-card {
   background: rgba(255, 255, 255, 0.05); /* Glassmorphism effect */
   backdrop-filter: blur(10px);
-  border-radius: 8px; /* Slightly smaller radius */
-  padding: 10px; /* Further reduced padding */
-  margin-bottom: 15px; /* Further reduced margin */
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -96,7 +164,7 @@ body {
 /* Carousel */
 .carousel-container {
   width: 100%;
-  max-width: 250px; /* Smaller tile size */
+  max-width: 250px; /* Compact tile size */
   margin: 0 auto;
   overflow: visible; /* Prevent clipping */
   border-radius: 8px;
@@ -109,7 +177,7 @@ body {
 
 .carousel-item img {
   width: 100%;
-  max-width: 250px; /* Smaller image size */
+  max-width: 250px;
   height: auto; /* Preserve natural height */
   object-fit: contain; /* Ensure no cropping */
   object-position: center;
@@ -137,39 +205,39 @@ body {
 /* Product Info */
 .product-info {
   text-align: center;
-  margin-top: 10px; /* Further reduced margin */
+  margin-top: 10px;
 }
 
 .product-title {
-  font-size: 1.3rem; /* Smaller font */
+  font-size: 1.3rem;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 6px; /* Reduced margin */
+  margin-bottom: 6px;
 }
 
 .product-specs {
-  font-size: 0.85rem; /* Smaller font */
+  font-size: 0.85rem;
   color: #b0b0b0;
-  margin-bottom: 6px; /* Reduced margin */
+  margin-bottom: 6px;
 }
 
 .product-price {
-  font-size: 1rem; /* Smaller font */
+  font-size: 1rem;
   font-weight: 700;
   color: #00ff88;
-  margin-bottom: 8px; /* Reduced margin */
+  margin-bottom: 8px;
 }
 
 .contact-links a {
   display: inline-block;
-  margin: 5px; /* Further reduced margin */
-  padding: 6px 12px; /* Smaller buttons */
+  margin: 5px;
+  padding: 6px 12px;
   background: #00ff88;
   color: #121212;
   text-decoration: none;
   border-radius: 5px;
   font-weight: 600;
-  font-size: 0.85rem; /* Smaller font */
+  font-size: 0.85rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -188,29 +256,35 @@ body {
   display: block;
   color: #ff4d4d;
   font-weight: 700;
-  font-size: 0.85rem; /* Smaller font */
-  margin-top: 6px; /* Reduced margin */
+  font-size: 0.85rem;
+  margin-top: 6px;
   text-transform: uppercase;
 }
 
 /* Catalog Container */
 .catalog-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Smaller tiles */
-  gap: 15px; /* Further reduced gap */
-  padding: 15px; /* Further reduced padding */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+/* Review Form and Display */
+#review-form,
+#reviews-display {
+  background-color: #1e1e1e;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .catalog-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller on tablet */
-    gap: 12px; /* Further reduced gap */
-    padding: 12px; /* Further reduced padding */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 12px;
   }
 
   .carousel-container {
-    max-width: 200px; /* Smaller images */
+    max-width: 200px;
   }
 
   .carousel-item img {
@@ -218,7 +292,7 @@ body {
   }
 
   #catalogue h2 {
-    font-size: 1.6rem; /* Smaller heading */
+    font-size: 1.6rem;
   }
 
   .product-title {
@@ -227,6 +301,23 @@ body {
 
   .product-price {
     font-size: 0.9rem;
+  }
+
+  #welcome, #hero, #about {
+    min-height: 40vh; /* Smaller for tablets */
+  }
+
+  #welcome::before, #hero::before {
+    background-size: contain; /* Ensure images scale */
+    filter: brightness(70%); /* Maintain reduced brightness for welcome and hero */
+  }
+
+  #about {
+    background-size: contain; /* Ensure images scale */
+  }
+
+  .navbar-dark {
+    background-size: cover;
   }
 }
 
@@ -245,10 +336,27 @@ body {
   }
 
   .carousel-container {
-    max-width: 150px; /* Smaller on mobile */
+    max-width: 150px;
   }
 
   .carousel-item img {
     max-width: 150px;
+  }
+
+  #welcome, #hero, #about {
+    min-height: 30vh; /* Smaller for mobile */
+  }
+
+  #welcome::before, #hero::before {
+    background-size: contain; /* Ensure images scale */
+    filter: brightness(70%); /* Maintain reduced brightness for welcome and hero */
+  }
+
+  #about {
+    background-size: contain; /* Ensure images scale */
+  }
+
+  .navbar-dark {
+    background-size: cover;
   }
 }

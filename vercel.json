@@ -5,11 +5,11 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/catalogue",
+      "source": "/catalogue.html",
       "destination": "/catalogue.html"
     },
     {
-      "source": "/add-product",
+      "source": "/add-product.html",
       "destination": "/add-product.html"
     },
     {

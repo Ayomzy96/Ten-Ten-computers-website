@@ -1,15 +1,15 @@
 {
   "version": 2,
   "public": true,
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "cleanUrls": false,
+  "trailingSlash": true,
   "rewrites": [
     {
-      "source": "/catalogue.html",
+      "source": "/catalogue",
       "destination": "/catalogue.html"
     },
     {
-      "source": "/add-product.html",
+      "source": "/add-product",
       "destination": "/add-product.html"
     },
     {

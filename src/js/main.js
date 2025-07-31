@@ -1,8 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Initialize Supabase client with error handling
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://kdijhjnkxkrfjlyavcoe.supabase.co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkaWpoam5reGtyZmpseWF2Y29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMDcyNDMsImV4cCI6MjA2Njc4MzI0M30.0EpnU9W3_O0b94Twy0FXdgtT49jByEO7tx2et-nQySA';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL 
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 let supabase;
 
 try {

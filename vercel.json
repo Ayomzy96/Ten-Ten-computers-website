@@ -19,11 +19,8 @@
   ],
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static",
-      "config": {
-        "distDir": "dist"
-      }
+      "src": "dist/**",
+      "use": "@vercel/static"
     }
   ]
 }

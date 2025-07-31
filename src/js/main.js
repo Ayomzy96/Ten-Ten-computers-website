@@ -1,9 +1,17 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// Initialize Supabase client
+// Initialize Supabase client with error handling
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://kdijhjnkxkrfjlyavcoe.supabase.co';
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkaWpoam5reGtyZmpseWF2Y29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMDcyNDMsImV4cCI6MjA2Njc4MzI0M30.0EpnU9W3_O0b94Twy0FXdgtT49jByEO7tx2et-nQySA';
-const supabase = createClient(supabaseUrl, supabaseKey);
+let supabase;
+
+try {
+  supabase = createClient(supabaseUrl, supabaseKey);
+  console.log('Supabase client initialized successfully');
+} catch (error) {
+  console.error('Failed to initialize Supabase client:', error);
+  alert('Error connecting to the database. Please try again later.');
+}
 
 // Lazy load background images
 function lazyLoadBackground() {
@@ -34,12 +42,18 @@ function lazyLoadBackground() {
 // Handle review form submission
 async function handleReviewSubmit(event) {
   event.preventDefault();
-  const form = event.target;
-  const username = form.querySelector('#username').value;
-  const rating = form.querySelector('input[name="rating"]:checked')?.value;
-  const reviewText = form.querySelector('#reviewText').value;
+  if (!supabase) {
+    console.error('Supabase client is not initialized');
+    alert('Cannot submit review: Database connection failed.');
+    return;
+  }
 
-  if (!username || !rating || !reviewText) {
+  const form = event.target;
+  const name = form.querySelector('#username').value;
+  const rating = form.querySelector('input[name="rating"]:checked')?.value;
+  const review = form.querySelector('#reviewText').value;
+
+  if (!name || !rating || !review) {
     alert('Please fill out all fields and select a rating.');
     return;
   }
@@ -47,7 +61,7 @@ async function handleReviewSubmit(event) {
   try {
     const { error } = await supabase
       .from('reviews')
-      .insert([{ username, rating: parseInt(rating), review_text: reviewText }]);
+      .insert([{ name, rating: parseInt(rating), review }]);
 
     if (error) {
       console.error('Error submitting review:', error);
@@ -65,13 +79,19 @@ async function handleReviewSubmit(event) {
     // Refresh reviews
     fetchReviews();
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('Unexpected error submitting review:', error);
     alert('An unexpected error occurred. Please try again.');
   }
 }
 
 // Fetch and display reviews
 async function fetchReviews() {
+  if (!supabase) {
+    console.error('Supabase client is not initialized');
+    document.getElementById('reviewList').innerHTML = '<p class="text-danger text-center">Error: Database connection failed.</p>';
+    return;
+  }
+
   try {
     const { data, error } = await supabase
       .from('reviews')
@@ -100,9 +120,9 @@ async function fetchReviews() {
       const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
       const reviewElement = `
         <div class="review-card mb-3 p-3 bg-dark text-light rounded">
-          <h5 class="fw-bold">${review.username}</h5>
+          <h5 class="fw-bold">${review.name}</h5>
           <p class="text-warning">${stars}</p>
-          <p>${review.review_text}</p>
+          <p>${review.review}</p>
         </div>
       `;
       reviewList.insertAdjacentHTML('beforeend', reviewElement);
@@ -123,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const reviewForm = document.getElementById('reviewForm');
   if (reviewForm) {
     reviewForm.addEventListener('submit', handleReviewSubmit);
+  } else {
+    console.error('Review form element not found');
   }
   fetchReviews();
 });

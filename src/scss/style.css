@@ -1,8 +1,8 @@
 /* General Styles */
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #121212; /* Deep dark background */
-  color: #e0e0e0; /* Light gray text for readability */
+  background-color: #121212;
+  color: #e0e0e0;
   margin: 0;
   padding: 0;
   line-height: 1.6;
@@ -10,9 +10,9 @@ body {
 
 /* Navbar */
 .navbar-dark {
-  background-color: #1e1e1e; /* Fallback color */
-  background-image: url('https://kdijhjnkxkrfjlyavcoe.supabase.co/storage/v1/object/public/images/navbar-bg.jpg'); /* Navbar background image */
-  background-size: cover; /* Flexible, fills navbar */
+  background-color: #1e1e1e;
+  background-image: url('https://kdijhjnkxkrfjlyavcoe.supabase.co/storage/v1/object/public/images/navbar-bg.jpg');
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -22,7 +22,7 @@ body {
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #00ff88 !important; /* Vibrant green brand */
+  color: #00ff88 !important;
 }
 
 .nav-link {
@@ -59,47 +59,23 @@ body {
 }
 
 .section-bg {
-  position: relative; /* For pseudo-element positioning */
-  min-height: 50vh; /* Flexible height */
+  position: relative;
+  min-height: 50vh;
   padding-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-size: contain; /* Default for sections with data-bg */
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
 
 /* Welcome Section */
 #welcome {
-  min-height: 40vh; /* Smaller for welcome section */
+  min-height: 40vh;
 }
 
-#welcome::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: contain; /* Flexible, full image visible */
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: brightness(70%); /* Reduce background brightness */
-  z-index: 1;
-}
-
-#welcome .container {
-  position: relative;
-  z-index: 2; /* Text above background */
-}
-
-/* Hero Section */
-#hero {
-  min-height: 50vh; /* Slightly larger for impact */
-  background-size: cover; /* Flexible, fills hero section */
-}
-
+#welcome::before,
 #hero::before {
   content: '';
   position: absolute;
@@ -107,26 +83,35 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover; /* Flexible, fills hero section */
   background-position: center;
   background-repeat: no-repeat;
-  filter: brightness(70%); /* Reduce background brightness */
+  filter: brightness(70%);
   z-index: 1;
 }
 
-#hero .container {
+#welcome::before {
+  background-size: contain;
+}
+
+#hero::before {
+  background-size: cover;
+}
+
+#welcome .container,
+#hero .container,
+#about .container {
   position: relative;
-  z-index: 2; /* Text above background */
+  z-index: 2;
+}
+
+/* Hero Section */
+#hero {
+  min-height: 50vh;
 }
 
 /* About Section */
 #about {
   min-height: 50vh;
-}
-
-#about .container {
-  position: relative;
-  z-index: 2; /* Text above background */
 }
 
 /* Catalogue Section */
@@ -142,18 +127,17 @@ body {
 
 /* Product Card */
 .product-card {
-  background: rgba(255, 255, 255, 0.05); /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 8px;
   padding: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;       /* Make sure it fills the grid cell */
-  height: 100%;      /* Optional: ensure equal height for all cards */
-  display: flex;     /* Optional: to align content */
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
 }
-
 
 .product-card:hover {
   transform: translateY(-5px);
@@ -167,10 +151,10 @@ body {
 
 /* Carousel */
 .carousel-container {
-  width: 100%;
-  max-width: 250px; /* Compact tile size */
+  width: 80%;
+  max-width: 250px;
   margin: 0 auto;
-  overflow: visible; /* Prevent clipping */
+  overflow: visible;
   border-radius: 8px;
 }
 
@@ -180,13 +164,13 @@ body {
 }
 
 .carousel-item img {
-  width: 100%;
+  width: 80%;
   max-width: 250px;
-  height: auto; /* Preserve natural height */
-  object-fit: contain; /* Ensure no cropping */
+  height: auto;
+  object-fit: contain;
   object-position: center;
   border-radius: 8px;
-  background-color: #1e1e1e; /* Background for transparent images */
+  background-color: #1e1e1e;
   transition: opacity 0.3s ease;
 }
 
@@ -268,8 +252,8 @@ body {
 /* Catalog Container */
 .catalog-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   padding: 10px;
 }
 
@@ -282,18 +266,12 @@ body {
 /* Responsive Design */
 @media (max-width: 992px) {
   .catalog-container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    padding: 15px;
-    max-width: 100%;
-  }
-
-  .carousel-container {
-    max-width: 100px;
+    gap: 20px;
+    padding: 20px;
   }
 
   .carousel-item img {
-    max-width: 220px;
+    max-width: 320px;
   }
 
   #catalogue h2 {
@@ -309,20 +287,11 @@ body {
   }
 
   #welcome, #hero, #about {
-    min-height: 40vh; /* Smaller for tablets */
+    min-height: 40vh;
   }
 
-  #welcome::before, #hero::before {
-    background-size: contain; /* Ensure images scale */
-    filter: brightness(70%); /* Maintain reduced brightness for welcome and hero */
-  }
-
-  #about {
-    background-size: contain; /* Ensure images scale */
-  }
-
-  .navbar-dark {
-    background-size: cover;
+  #about, #welcome::before, #hero::before {
+    background-size: contain;
   }
 }
 
@@ -340,35 +309,19 @@ body {
     font-size: 0.8rem;
   }
 
-  .catalog-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
-  gap: 15px;
-  padding: 10px;
-}
-
   .carousel-container {
-    max-width: 180px;
+    max-width: 160px;
   }
 
   .carousel-item img {
-    max-width: 180px;
+    max-width: 160px;
   }
 
   #welcome, #hero, #about {
-    min-height: 30vh; /* Smaller for mobile */
+    min-height: 30vh;
   }
 
-  #welcome::before, #hero::before {
-    background-size: contain; /* Ensure images scale */
-    filter: brightness(70%); /* Maintain reduced brightness for welcome and hero */
-  }
-
-  #about {
-    background-size: contain; /* Ensure images scale */
-  }
-
-  .navbar-dark {
-    background-size: cover;
+  #about, #welcome::before, #hero::before {
+    background-size: contain;
   }
 }

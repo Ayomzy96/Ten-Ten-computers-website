@@ -263,6 +263,37 @@ body {
   background-color: #1e1e1e;
 }
 
+/* Star Rating Form */
+#star-rating {
+  direction: rtl; /* Right-to-left for intuitive star selection */
+  font-size: 2rem; /* Larger star size */
+  cursor: pointer;
+}
+#star-rating input {
+  display: none; /* Hide radio inputs */
+}
+#star-rating label.star {
+  color: #ccc; /* Default color for unselected stars */
+  transition: color 0.2s ease-in-out;
+}
+#star-rating input:checked ~ label.star {
+  color: #f5c518; /* Gold color for selected stars */
+}
+#star-rating label.star:hover,
+#star-rating label.star:hover ~ label.star {
+  color: #ffdd77; /* Lighter gold for hover effect */
+}
+#star-rating .fa-star {
+  font-size: 2rem; /* Ensure Font Awesome stars are sized correctly */
+}
+
+/* Review Display */
+.review-card .star-display {
+  font-size: 1.5rem; /* Larger stars for visibility */
+  letter-spacing: 2px; /* Space out stars */
+  margin-bottom: 0.5rem; /* Spacing below stars */
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
   .catalog-container {

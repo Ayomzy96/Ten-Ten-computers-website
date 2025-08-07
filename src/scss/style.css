@@ -98,13 +98,14 @@ body {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 400px;
 }
 
 .product-card:hover {
@@ -220,9 +221,11 @@ body {
 /* Catalog Container */
 .catalog-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Review Form and Display */
@@ -254,6 +257,26 @@ body {
 #star-rating label.star:hover,
 #star-rating label.star:hover ~ label.star {
   color: #ffdd77;
+}
+
+/* Pagination Controls */
+.pagination .btn-primary {
+  background-color: #00ff88;
+  border: none;
+  color: #121212;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination .btn-primary:hover {
+  background-color: #00cc70;
+  transform: scale(1.05);
+}
+
+.pagination .btn-primary:disabled {
+  background-color: #4a4a4a;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Responsive Design */

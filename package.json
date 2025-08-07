@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "serve": "vite preview"
-},
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.89.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-csp": "^1.1.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -23,7 +24,7 @@
     "express": "^5.1.0"
   },
   "engines": {
-  "node": "22.x"
-},
+    "node": "22.x"
+  },
   "description": ""
 }

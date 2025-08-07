@@ -17,7 +17,7 @@ try {
 async function fetchLaptops() {
   if (!supabase) {
     console.error('Supabase client is not initialized');
-    document.getElementById('catalogue').innerHTML = '<p class="text-danger text-center">Error: Database connection failed.</p>';
+    document.getElementById('product-catalog').innerHTML = '<p class="text-danger text-center">Error: Database connection failed.</p>';
     return;
   }
 
@@ -32,7 +32,7 @@ async function fetchLaptops() {
       throw new Error(`Failed to fetch laptops: ${error.message}`);
     }
 
-    const catalogContainer = document.getElementById('catalogue');
+    const catalogContainer = document.getElementById('product-catalog');
     if (!catalogContainer) {
       console.error('Catalogue container element not found');
       return;
@@ -98,13 +98,13 @@ async function fetchLaptops() {
     // Initialize Bootstrap carousels
     document.querySelectorAll('.carousel-container').forEach(carousel => {
       new bootstrap.Carousel(carousel, {
-        interval: 5000, // Auto-slide every 5 seconds
+        interval: 5000,
         ride: 'carousel'
       });
     });
   } catch (error) {
     console.error('Error displaying laptops:', error);
-    const catalogContainer = document.getElementById('catalogue');
+    const catalogContainer = document.getElementById('product-catalog');
     if (catalogContainer) {
       catalogContainer.innerHTML = `<p class="text-danger text-center">Error loading laptops: ${error.message}</p>`;
     }

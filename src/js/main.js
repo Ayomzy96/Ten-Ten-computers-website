@@ -19,22 +19,28 @@ function lazyLoadBackground() {
   sections.forEach(section => {
     const bgUrl = section.getAttribute('data-bg');
     if (bgUrl) {
-      // Create a pseudo-element-like div for the background
-      const bgLayer = document.createElement('div');
-      bgLayer.style.position = 'absolute';
-      bgLayer.style.top = '0';
-      bgLayer.style.left = '0';
-      bgLayer.style.width = '100%';
-      bgLayer.style.height = '100%';
-      bgLayer.style.backgroundImage = bgUrl;
-      bgLayer.style.backgroundSize = section.id === 'hero' ? 'cover' : 'contain';
-      bgLayer.style.backgroundPosition = 'center';
-      bgLayer.style.backgroundRepeat = 'no-repeat';
-      bgLayer.style.zIndex = '1';
-      if (section.id === 'welcome' || section.id === 'hero') {
-        bgLayer.style.filter = 'brightness(70%)'; // Apply brightness to welcome and hero
+      try {
+        // Create a pseudo-element-like div for the background
+        const bgLayer = document.createElement('div');
+        bgLayer.style.position = 'absolute';
+        bgLayer.style.top = '0';
+        bgLayer.style.left = '0';
+        bgLayer.style.width = '100%';
+        bgLayer.style.height = '100%';
+        bgLayer.style.backgroundImage = bgUrl;
+        bgLayer.style.backgroundSize = section.id === 'hero' ? 'cover' : 'contain';
+        bgLayer.style.backgroundPosition = 'center';
+        bgLayer.style.backgroundRepeat = 'no-repeat';
+        bgLayer.style.zIndex = '1';
+        if (section.id === 'welcome' || section.id === 'hero') {
+          bgLayer.style.filter = 'brightness(70%)'; // Apply brightness to welcome and hero
+        }
+        section.insertBefore(bgLayer, section.firstChild);
+      } catch (error) {
+        console.error(`Failed to load background for section ${section.id}:`, error);
       }
-      section.insertBefore(bgLayer, section.firstChild);
+    } else {
+      console.warn(`No data-bg attribute found for section ${section.id}`);
     }
   });
 }
@@ -118,11 +124,20 @@ async function fetchReviews() {
 
     data.forEach(review => {
       const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+      // Fallback for missing or invalid created_at
+      const formattedDate = review.created_at
+        ? new Date(review.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        : 'Unknown date';
       const reviewElement = `
         <div class="review-card mb-3 p-3 bg-dark text-light rounded">
           <h5 class="fw-bold">${review.name}</h5>
           <p class="text-warning">${stars}</p>
           <p>${review.review}</p>
+          <p class="text-muted small">Posted on: ${formattedDate}</p>
         </div>
       `;
       reviewList.insertAdjacentHTML('beforeend', reviewElement);

@@ -137,7 +137,7 @@ async function fetchReviews() {
           <h5 class="fw-bold">${review.name}</h5>
           <p class="text-warning">${stars}</p>
           <p>${review.review}</p>
-          <p class="text-muted small">Posted on: ${formattedDate}</p>
+          <p class="text-light small">Posted on: ${formattedDate}</p>
         </div>
       `;
       reviewList.insertAdjacentHTML('beforeend', reviewElement);
@@ -154,12 +154,16 @@ async function fetchReviews() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded, initializing...');
-  lazyLoadBackground();
+  try {
+    lazyLoadBackground();
+    fetchReviews();
+  } catch (error) {
+    console.error('Error during initialization:', error);
+  }
   const reviewForm = document.getElementById('reviewForm');
   if (reviewForm) {
     reviewForm.addEventListener('submit', handleReviewSubmit);
   } else {
     console.error('Review form element not found');
   }
-  fetchReviews();
 });

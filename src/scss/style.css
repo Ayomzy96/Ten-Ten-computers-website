@@ -255,15 +255,32 @@ body {
 
 /* Catalog Container */
 .catalog-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 30px;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  /* Hide overflow items visually, but keep them in DOM for pagination */
-  overflow: hidden;
+}
+
+.catalog-container > .product-card {
+  flex: 1 1 calc(33.333% - 30px);
+  max-width: calc(33.333% - 30px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 992px) {
+  .catalog-container > .product-card {
+    flex: 1 1 calc(50% - 30px);
+    max-width: calc(50% - 30px);
+  }
+}
+
+@media (max-width: 576px) {
+  .catalog-container > .product-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
 
 /* Review Form and Display */

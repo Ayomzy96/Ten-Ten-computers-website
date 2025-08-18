@@ -57,7 +57,7 @@ async function uploadLaptop(event) {
         .upload(`public/${fileName}`, file);
 
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Image upload timed out')), 40000);
+        setTimeout(() => reject(new Error('Image upload timed out')), 900000);
       });
 
       const { data: uploadData, error: uploadError } = await Promise.race([uploadPromise, timeoutPromise]);

@@ -221,11 +221,14 @@ body {
 /* Catalog Container */
 .catalog-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 30px;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  /* Hide overflow items visually, but keep them in DOM for pagination */
+  overflow: hidden;
 }
 
 /* Review Form and Display */

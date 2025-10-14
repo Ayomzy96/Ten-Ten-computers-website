@@ -1,6 +1,6 @@
 # 💻 Ten-Ten Computers — Laptop Sales Website
 
-A sleek and modern web application for my laptop business. It features a product catalogue, review system, image uploads, and responsive design.
+This project addresses the challenge of managing and showcasing a computer store’s inventory online. It streamlines product cataloguing, enables easy addition of new products, and improves customer access to product information. 
 
 ---
 

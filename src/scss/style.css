@@ -354,6 +354,44 @@ body {
   cursor: not-allowed;
 }
 
+/* Force carousel images to fill the product tile / container */
+.product-card .carousel-container,
+.product-card .carousel-container .carousel-inner,
+.product-card .carousel-container .carousel-item {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+}
+
+.product-card .carousel-container img,
+.product-card .carousel-container .carousel-item img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: cover !important;     /* crop to fill without stretching */
+  object-position: center center !important;
+  display: block;
+  border-radius: 6px;
+}
+
+/* Override any rules that force small images on mobile */
+@media (max-width: 576px) {
+  .carousel-container {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1; /* keep tile ratio, adjust if needed */
+    max-height: 320px;
+    min-height: 160px;
+  }
+
+  .carousel-item img,
+  .carousel-container img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
   #catalogue h2 {

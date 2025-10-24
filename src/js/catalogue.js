@@ -96,7 +96,8 @@ function renderLaptops() {
     `).join('');
     html += `
       <div class="product-card ${stockStatus}">
-        <div class="carousel-container" id="${carouselId}" data-bs-ride="carousel">
+        <!-- remove automatic ride; explicitly disable interval -->
+        <div class="carousel slide carousel-container" id="${carouselId}" data-bs-interval="false">
           <div class="carousel-inner">
             ${carouselItems}
           </div>
@@ -120,12 +121,14 @@ function renderLaptops() {
     `;
   });
   catalogContainer.innerHTML = html;
-  // Re-initialize Bootstrap carousels
+  // Re-initialize Bootstrap carousels (no automatic cycling)
   setTimeout(() => {
-    document.querySelectorAll('.carousel-container').forEach(carousel => {
-      new bootstrap.Carousel(carousel, {
-        interval: 5000,
-        ride: 'carousel'
+    document.querySelectorAll('.carousel.slide').forEach(el => {
+      // ensure Bootstrap carousel exists and is configured not to auto-cycle
+      bootstrap.Carousel.getOrCreateInstance(el, {
+        interval: false,
+        touch: true,
+        wrap: true
       });
     });
   }, 100);

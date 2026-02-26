@@ -1,18 +1,6 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import supabase from './supabaseClient.js';
 
-// Initialize Supabase client with error handling
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-let supabase;
-
-try {
-  supabase = createClient(supabaseUrl, supabaseKey);
-  console.log('Supabase client initialized successfully');
-} catch (error) {
-  console.error('Failed to initialize Supabase client:', error);
-  const toast = new bootstrap.Toast(document.getElementById('errorToast'));
-  toast.show();
-}
+console.log('Centralized supabase client available (add-product):', !!supabase);
 
 // Upload laptop function
 async function uploadLaptop(event) {

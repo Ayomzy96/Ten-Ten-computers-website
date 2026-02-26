@@ -1,16 +1,6 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import supabase from './supabaseClient.js';
 
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-let supabase = null;
-try {
-  supabase = createClient(supabaseUrl, supabaseKey);
-  console.log('Supabase client initialized successfully');
-} catch (error) {
-  console.error('Failed to initialize Supabase client:', error);
-  alert('Error connecting to the database. Please try again later.');
-}
+console.log('Centralized supabase client available (catalogue):', !!supabase);
 
 
 // Fetch, render, and paginate laptops

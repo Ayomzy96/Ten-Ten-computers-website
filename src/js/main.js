@@ -1,17 +1,7 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import supabase from './supabaseClient.js';
 
-// Initialize Supabase client with error handling
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL 
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-let supabase;
-
-try {
-  supabase = createClient(supabaseUrl, supabaseKey);
-  console.log('Supabase client initialized successfully');
-} catch (error) {
-  console.error('Failed to initialize Supabase client:', error);
-  alert('Error connecting to the database. Please try again later.');
-}
+// Debug: quickly show whether the centralized client exists
+console.log('Centralized supabase client available:', !!supabase);
 
 // Lazy load background images
 function lazyLoadBackground() {

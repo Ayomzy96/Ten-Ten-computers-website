@@ -3,98 +3,123 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ten-Ten Computers - Add Product</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    .add-product-container {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    .form-label {
-      font-weight: bold;
-    }
-    .form-control, .form-check-input {
-      margin-bottom: 1rem;
-    }
-    .alert {
-      display: none;
-    }
-    .alert.show {
-      display: block;
-    }
-  </style>
-  <script type="module" crossorigin src="/assets/add-product-C3hnru0V.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/style-OyH2aAWt.js">
-  <link rel="stylesheet" crossorigin href="/assets/style-C7njHdLz.css">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    connect-src 'self' https://kdijhjnkxkrfjlyavcoe.supabase.co https://ph.supabase.green;
+    img-src 'self' https://kdijhjnkxkrfjlyavcoe.supabase.co https://ph.supabase.green data:;
+    script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://esm.sh;
+    style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com 'unsafe-inline';
+    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  ">
+  <title>Upload Product - Ten-Ten Computers</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script type="module" crossorigin src="/assets/add-product-Chz6EOXJ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/supabaseClient-Bsz6-ADX.js">
+  <link rel="stylesheet" crossorigin href="/assets/supabaseClient-BWFY5CW-.css">
 </head>
-<body class="bg-dark text-white">
+<body class="bg-primary-dark">
   <!-- NAVIGATION -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="./index.html">Home</a>
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="./index.html">Ten-Ten Computers</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+        data-bs-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="./catalogue.html">Catalogue and Pricing</a>
-          <a class="nav-link active" aria-current="page" href="./add-product.html">Add Product</a>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Contact us 👇
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="https://wa.me/2348165773599">Whatsapp</a></li>
-              <li><a class="dropdown-item" href="tel:+2348165773599">Call Us ☎</a></li>
-              <li><a class="dropdown-item" href="mailto:abrahamayomide117@gmail.com">E-mail ✉</a></li>
-            </ul>
-          </li>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./catalogue.html">Catalogue</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="./add-product.html">Upload Product</a></li>
+        </ul>
+      </div>
+      <div class="d-lg-block ms-3">
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-light fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Contact Us
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="https://wa.me/2348165773599">WhatsApp</a></li>
+            <li><a class="dropdown-item" href="tel:+2348165773599">Call Us</a></li>
+            <li><a class="dropdown-item" href="mailto:abrahamayomide117@gmail.com">E-mail</a></li>
+          </ul>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- ADD PRODUCT SECTION -->
-  <section class="add-product-container">
-    <h2 class="mb-4 text-center fw-bold display-5">Add New Laptop</h2>
-    <div id="alert-message" class="alert" role="alert"></div>
-    <form id="add-product-form">
-      <div class="mb-3">
-        <label for="model" class="form-label">Model</label>
-        <input type="text" class="form-control" id="model" required>
+  <!-- UPLOAD SECTION -->
+  <section id="upload-product" class="container py-5">
+    <h2 class="display-5 fw-bold text-white text-center mb-4 animate__animated animate__fadeIn">Upload New Product</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form id="upload-form" class="bg-dark p-4 rounded-3 shadow animate__animated animate__fadeIn" style="animation-delay: 0.2s;">
+          <div class="mb-3">
+            <label for="model" class="form-label fw-bold text-light">Model</label>
+            <input type="text" class="form-control" id="model" name="model" placeholder="e.g., Dell XPS 13" required />
+          </div>
+          <div class="mb-3">
+            <label for="specifications" class="form-label fw-bold text-light">Specifications</label>
+            <textarea class="form-control" id="specifications" name="specifications" rows="4" placeholder="e.g., Intel i7, 16GB RAM, 512GB SSD" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label fw-bold text-light">Price (₦)</label>
+            <input type="number" class="form-control" id="price" name="price" placeholder="e.g., 450000" step="0.01" required />
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_in_stock" name="is_in_stock" />
+            <label class="form-check-label text-light" for="is_in_stock">In Stock</label>
+          </div>
+          <div class="mb-3">
+            <label for="phone_number" class="form-label fw-bold text-light">Phone Number</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="e.g., +2348165773599" required />
+          </div>
+          <div class="mb-3">
+            <label for="whatsapp_number" class="form-label fw-bold text-light">WhatsApp Number</label>
+            <input type="text" class="form-control" id="whatsapp_number" name="whatsapp_number" placeholder="e.g., +2348165773599" required />
+          </div>
+          <div class="mb-3">
+            <label for="image_files" class="form-label fw-bold text-light">Product Images</label>
+            <input type="file" class="form-control" id="image_files" name="image_files" multiple accept="image/*" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Upload Product</button>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="specifications" class="form-label">Specifications</label>
-        <textarea class="form-control" id="specifications" rows="4" required></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="price" class="form-label">Price ($)</label>
-        <input type="number" class="form-control" id="price" step="0.01" min="0" required>
-      </div>
-      <div class="mb-3">
-        <label for="image-urls" class="form-label">Image URLs (comma-separated)</label>
-        <textarea class="form-control" id="image-urls" rows="3" placeholder="e.g., https://example.com/image1.jpg,https://example.com/image2.jpg"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="phone-number" class="form-label">Phone Number</label>
-        <input type="text" class="form-control" id="phone-number" placeholder="+1234567890" required>
-      </div>
-      <div class="mb-3">
-        <label for="whatsapp-number" class="form-label">WhatsApp Number (10-15 digits, no +)</label>
-        <input type="text" class="form-control" id="whatsapp-number" placeholder="1234567890" required>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="is-in-stock" checked>
-        <label class="form-check-label" for="is-in-stock">In Stock</label>
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Add Product</button>
-    </form>
-    <a href="./catalogue.html" class="btn btn-secondary w-100 mt-3">Back to Catalogue</a>
+    </div>
   </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FOOTER SECTION -->
+  <footer class="bg-dark text-light py-4">
+    <div class="container text-center">
+      <h5 class="fw-bold mb-3 animate__animated animate__fadeIn">Ten-Ten Computers</h5>
+      <p class="mb-0 animate__animated animate__fadeIn" style="animation-delay: 0.4s;">
+        &copy; 2025 Ten-Ten Computers. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0"
+         role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+      <div class="d-flex">
+        <div class="toast-body">✅ Product uploaded successfully!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    <div id="errorToast" class="toast align-items-center text-white bg-danger border-0"
+         role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+      <div class="d-flex">
+        <div class="toast-body">❌ Error uploading product!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </body>
 </html>

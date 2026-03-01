@@ -1,139 +1,215 @@
 import supabase from './supabaseClient.js';
 
+const PAGE_SIZE = 9;
+
 console.log('Centralized supabase client available (catalogue):', !!supabase);
 
+async function fetchLaptops(page = 1) {
+  const catalog = document.getElementById('product-catalog');
+  if (!catalog) return;
 
-// Fetch, render, and paginate laptops
-let allLaptops = [];
-let currentPage = 1;
-const pageSize = 9;
-
-async function fetchLaptops() {
-  const catalogContainer = document.getElementById('product-catalog');
   if (!supabase) {
-    console.error('Supabase client is not initialized');
-    if (catalogContainer) {
-      catalogContainer.innerHTML = '<p class="text-danger text-center">Error: Database connection failed.</p>';
-    }
+    catalog.innerHTML = '<p class="text-danger text-center">Error: Database client not initialized.</p>';
     return;
   }
+
+  const from = (page - 1) * PAGE_SIZE;
+  const to = page * PAGE_SIZE - 1;
+
   try {
-    let data = null;
-    let error = null;
-    const cacheKey = 'catalogue_laptops';
-    const cache = localStorage.getItem(cacheKey);
-    if (cache) {
-      try {
-        data = JSON.parse(cache);
-      } catch (e) {
-        data = null;
-      }
-    }
-    if (!data) {
-      const response = await supabase
-        .from('laptops')
-        .select('id, model, specifications, price, is_in_stock, image_urls, phone_number, whatsapp_number')
-        .order('created_at', { ascending: false });
-      data = response.data;
-      error = response.error;
-      if (data) {
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-      }
-    }
-    if (error) {
-      throw new Error(`Failed to fetch laptops: ${error.message}`);
-    }
-    allLaptops = Array.isArray(data) ? data : [];
-    currentPage = 1;
-    renderLaptops();
-  } catch (error) {
-    console.error('Error displaying laptops:', error);
-    if (catalogContainer) {
-      catalogContainer.innerHTML = `<p class="text-danger text-center">Error loading laptops: ${error.message}</p>`;
-    }
+    const { data, error, count } = await supabase
+      .from('laptops')
+      .select('id, model, specifications, price, is_in_stock, image_urls, phone_number, whatsapp_number', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (error) throw error;
+
+    renderLaptops(data || []);
+    const totalPages = Math.max(1, Math.ceil((count || 0) / PAGE_SIZE));
+    renderPagination(totalPages, page);
+  } catch (err) {
+    console.error('Error fetching laptops:', err);
+    catalog.innerHTML = `<p class="text-danger text-center">Error loading laptops: ${err.message}</p>`;
   }
 }
 
-function renderLaptops() {
-  const catalogContainer = document.getElementById('product-catalog');
-  if (!catalogContainer) return;
-  catalogContainer.innerHTML = '';
-  if (!allLaptops || allLaptops.length === 0) {
-    catalogContainer.innerHTML = '<p class="text-center text-light">No laptops available.</p>';
+function renderLaptops(items) {
+  const catalog = document.getElementById('product-catalog');
+  if (!catalog) return;
+  catalog.innerHTML = '';
+
+  if (!items || items.length === 0) {
+    catalog.innerHTML = '<p class="text-center text-light">No laptops available.</p>';
     return;
   }
-  const start = 0;
-  const end = currentPage * pageSize;
-  const laptopsToShow = allLaptops.slice(start, end);
-  let html = '';
-  laptopsToShow.forEach((laptop, index) => {
+
+  items.forEach(laptop => {
+    const card = document.createElement('div');
+    card.className = 'product-card ' + (laptop.is_in_stock ? '' : 'out-of-stock');
+
+    // Carousel container
+    const carousel = document.createElement('div');
     const carouselId = `carousel-${laptop.id}`;
-    const imageUrls = Array.isArray(laptop.image_urls) && laptop.image_urls.length > 0
-      ? laptop.image_urls
-      : ['https://kdijhjnkxkrfjlyavcoe.supabase.co/storage/v1/object/public/images/placeholder.jpg'];
-    const stockStatus = laptop.is_in_stock ? '' : 'out-of-stock';
-    const stockLabel = laptop.is_in_stock ? '' : '<span class="out-of-stock-label">Out of Stock</span>';
-    const contactLinks = laptop.is_in_stock
-      ? `<div class="contact-links">
-            <a href="tel:${laptop.phone_number}" class="contact-link">Call Us</a>
-            <a href="https://wa.me/${laptop.whatsapp_number}" class="contact-link">WhatsApp</a>
-          </div>`
-      : '<div class="contact-links"><a class="contact-link disabled">Call Us</a><a class="contact-link disabled">WhatsApp</a></div>';
-    const carouselItems = imageUrls.map((url, imgIndex) => `
-      <div class="carousel-item ${imgIndex === 0 ? 'active' : ''}">
-        <img src="${url}" alt="${laptop.model} image ${imgIndex + 1}" class="d-block w-100" loading="lazy" />
-      </div>
-    `).join('');
-    html += `
-      <div class="product-card ${stockStatus}">
-        <!-- remove automatic ride; explicitly disable interval -->
-        <div class="carousel slide carousel-container" id="${carouselId}" data-bs-interval="false">
-          <div class="carousel-inner">
-            ${carouselItems}
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev" aria-label="Previous image">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next" aria-label="Next image">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-        <div class="product-info">
-          <h3 class="product-title">${laptop.model}</h3>
-          <p class="product-specs">${laptop.specifications}</p>
-          <p class="product-price">₦${laptop.price.toFixed(2)}</p>
-          ${contactLinks}
-          ${stockLabel}
-        </div>
-      </div>
-    `;
+    carousel.className = 'carousel slide carousel-container';
+    carousel.id = carouselId;
+    carousel.setAttribute('data-bs-interval', 'false');
+
+    const inner = document.createElement('div');
+    inner.className = 'carousel-inner';
+
+    const imageUrls = Array.isArray(laptop.image_urls) && laptop.image_urls.length ? laptop.image_urls : ['https://kdijhjnkxkrfjlyavcoe.supabase.co/storage/v1/object/public/images/placeholder.jpg'];
+
+    imageUrls.forEach((url, idx) => {
+      const item = document.createElement('div');
+      item.className = 'carousel-item' + (idx === 0 ? ' active' : '');
+      const img = document.createElement('img');
+      img.className = 'd-block w-100';
+      img.loading = 'lazy';
+      img.src = url;
+      img.alt = `${laptop.model} image ${idx + 1}`;
+      item.appendChild(img);
+      inner.appendChild(item);
+    });
+
+    // Controls
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'carousel-control-prev';
+    prevBtn.type = 'button';
+    prevBtn.setAttribute('data-bs-target', `#${carouselId}`);
+    prevBtn.setAttribute('data-bs-slide', 'prev');
+    prevBtn.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'carousel-control-next';
+    nextBtn.type = 'button';
+    nextBtn.setAttribute('data-bs-target', `#${carouselId}`);
+    nextBtn.setAttribute('data-bs-slide', 'next');
+    nextBtn.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+
+    carousel.appendChild(inner);
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
+
+    // Info
+    const info = document.createElement('div');
+    info.className = 'product-info';
+
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'product-title';
+    titleEl.textContent = laptop.model;
+    info.appendChild(titleEl);
+
+    const specsEl = document.createElement('p');
+    specsEl.className = 'product-specs';
+    specsEl.textContent = laptop.specifications;
+    info.appendChild(specsEl);
+
+    const priceEl = document.createElement('p');
+    priceEl.className = 'product-price';
+    priceEl.textContent = `₦${Number(laptop.price).toFixed(2)}`;
+    info.appendChild(priceEl);
+
+    const contact = document.createElement('div');
+    contact.className = 'contact-links';
+    if (laptop.is_in_stock) {
+      const callA = document.createElement('a');
+      callA.href = `tel:${laptop.phone_number}`;
+      callA.className = 'contact-link';
+      callA.textContent = 'Call Us';
+      const waA = document.createElement('a');
+      waA.href = `https://wa.me/${laptop.whatsapp_number}`;
+      waA.className = 'contact-link';
+      waA.textContent = 'WhatsApp';
+      contact.appendChild(callA);
+      contact.appendChild(waA);
+    } else {
+      const callA = document.createElement('a');
+      callA.className = 'contact-link disabled';
+      callA.textContent = 'Call Us';
+      const waA = document.createElement('a');
+      waA.className = 'contact-link disabled';
+      waA.textContent = 'WhatsApp';
+      contact.appendChild(callA);
+      contact.appendChild(waA);
+    }
+
+    info.appendChild(contact);
+    if (!laptop.is_in_stock) {
+      const out = document.createElement('div');
+      out.className = 'out-of-stock-label';
+      out.textContent = 'Out of Stock';
+      info.appendChild(out);
+    }
+
+    card.appendChild(carousel);
+    card.appendChild(info);
+    catalog.appendChild(card);
   });
-  catalogContainer.innerHTML = html;
-  // Re-initialize Bootstrap carousels (no automatic cycling)
+
+  // Initialize Bootstrap carousels
   setTimeout(() => {
     document.querySelectorAll('.carousel.slide').forEach(el => {
-      // ensure Bootstrap carousel exists and is configured not to auto-cycle
-      bootstrap.Carousel.getOrCreateInstance(el, {
-        interval: false,
-        touch: true,
-        wrap: true
-      });
+      bootstrap.Carousel.getOrCreateInstance(el, { interval: false, touch: true, wrap: true });
     });
-  }, 100);
-  // Add Load More button if there are more products
-  if (allLaptops.length > laptopsToShow.length) {
-    const loadMoreDiv = document.createElement('div');
-    loadMoreDiv.className = 'd-flex justify-content-center mt-4';
-    loadMoreDiv.innerHTML = `<button id="loadMoreBtn" class="btn btn-primary" aria-label="Load more products">Load More</button>`;
-    catalogContainer.appendChild(loadMoreDiv);
-    document.getElementById('loadMoreBtn').onclick = () => {
-      currentPage++;
-      renderLaptops();
-    };
-  }
+  }, 50);
 }
 
-// Load products on page load
-window.addEventListener('DOMContentLoaded', fetchLaptops);
+function renderPagination(totalPages, currentPage) {
+  let container = document.getElementById('pagination-controls');
+  if (!container) {
+    const catalog = document.getElementById('product-catalog');
+    if (!catalog) return;
+    container = document.createElement('div');
+    container.id = 'pagination-controls';
+    container.className = 'd-flex justify-content-center mt-4';
+    catalog.parentNode.insertBefore(container, catalog.nextSibling);
+  }
+
+  // Clear
+  container.innerHTML = '';
+
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Page navigation');
+  const ul = document.createElement('ul');
+  ul.className = 'pagination';
+
+  const addPageItem = (label, page, disabled = false, active = false) => {
+    const li = document.createElement('li');
+    li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+    const btn = document.createElement('button');
+    btn.className = 'page-link';
+    btn.type = 'button';
+    btn.textContent = label;
+    btn.dataset.page = page;
+    if (!disabled && !active) {
+      btn.addEventListener('click', () => {
+        fetchLaptops(page);
+        const catalogTop = document.getElementById('catalogue');
+        if (catalogTop) catalogTop.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+    li.appendChild(btn);
+    ul.appendChild(li);
+  };
+
+  // Previous
+  addPageItem('Previous', Math.max(1, currentPage - 1), currentPage === 1);
+
+  // Pages
+  const maxButtons = 7;
+  let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let end = Math.min(totalPages, start + maxButtons - 1);
+  if (end - start < maxButtons - 1) start = Math.max(1, end - maxButtons + 1);
+  for (let p = start; p <= end; p++) {
+    addPageItem(String(p), p, false, p === currentPage);
+  }
+
+  // Next
+  addPageItem('Next', Math.min(totalPages, currentPage + 1), currentPage === totalPages);
+
+  nav.appendChild(ul);
+  container.appendChild(nav);
+}
+
+window.addEventListener('DOMContentLoaded', () => fetchLaptops(1));

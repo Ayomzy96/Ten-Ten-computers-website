@@ -7,9 +7,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <script type="module" crossorigin src="/assets/catalogue-C6UZCxOl.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/style-OyH2aAWt.js">
-  <link rel="stylesheet" crossorigin href="/assets/style-C7njHdLz.css">
+  <script type="module" crossorigin src="/assets/catalogue-C9vRCURJ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/supabaseClient-Bsz6-ADX.js">
+  <link rel="stylesheet" crossorigin href="/assets/supabaseClient-BWFY5CW-.css">
 </head>
 <body class="bg-primary-dark">
   <!-- NAVIGATION -->
@@ -25,17 +25,19 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link active" aria-current="page" href="./catalogue.html">Catalogue</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Contact Us
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="https://wa.me/2348165773599">WhatsApp</a></li>
-              <li><a class="dropdown-item" href="tel:+2348165773599">Call Us</a></li>
-              <li><a class="dropdown-item" href="mailto:abrahamayomide117@gmail.com">E-mail</a></li>
-            </ul>
-          </li>
         </ul>
+      </div>
+      <div class="d-lg-block ms-3">
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-light fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Contact Us
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="https://wa.me/2348165773599">WhatsApp</a></li>
+            <li><a class="dropdown-item" href="tel:+2348165773599">Call Us</a></li>
+            <li><a class="dropdown-item" href="mailto:abrahamayomide117@gmail.com">E-mail</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
@@ -48,6 +50,9 @@
       </h2>
       <div class="catalog-container" id="product-catalog">
         <!-- Products will be dynamically inserted here -->
+        <div class="d-flex justify-content-center mt-4">
+          <button id="loadMoreBtn" class="btn btn-primary" aria-label="Load more products">Load More</button>
+        </div>
       </div>
     </div>
   </section>

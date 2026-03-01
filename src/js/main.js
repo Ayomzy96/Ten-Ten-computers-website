@@ -156,4 +156,21 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('Review form element not found');
   }
+
+  // Hero search: redirect to catalogue with query param
+  try {
+    const heroForm = document.getElementById('heroSearchForm');
+    const heroInput = document.getElementById('heroSearchInput');
+    if (heroForm && heroInput) {
+      heroForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = heroInput.value.trim();
+        // Redirect to catalogue page with query param; empty query will still open catalogue
+        const target = q ? `./catalogue.html?q=${encodeURIComponent(q)}` : './catalogue.html';
+        window.location.href = target;
+      });
+    }
+  } catch (err) {
+    console.error('Error wiring hero search:', err);
+  }
 });

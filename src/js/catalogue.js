@@ -17,9 +17,22 @@ async function fetchLaptops(page = 1) {
   const to = page * PAGE_SIZE - 1;
 
   try {
-    const { data, error, count } = await supabase
+    // Support simple search via ?q=term — matches model OR specifications (case-insensitive)
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q')?.trim();
+
+    let query = supabase
       .from('laptops')
-      .select('id, model, specifications, price, is_in_stock, image_urls, phone_number, whatsapp_number', { count: 'exact' })
+      .select('id, model, specifications, price, is_in_stock, image_urls, phone_number, whatsapp_number', { count: 'exact' });
+
+    if (q) {
+      // Use supabase .or with ilike for model or specifications
+      // e.g. model.ilike.%ThinkPad%,specifications.ilike.%ThinkPad%
+      const like = `%${q}%`;
+      query = query.or(`model.ilike.${like},specifications.ilike.${like}`);
+    }
+
+    const { data, error, count } = await query
       .order('created_at', { ascending: false })
       .range(from, to);
 

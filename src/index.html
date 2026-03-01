@@ -85,10 +85,18 @@
       <p class="fs-4 text-light mb-5 animate__animated animate__fadeIn" style="animation-delay: 0.4s;">
         Discover top-quality laptops, expert software setup, gaming solutions, and reliable tech support.
       </p>
-      <a href="https://us9.list-manage.com/contact-form?u=90f3e57ae81e71dbf67c9884e&form_id=37207363f4b3cd87ba2facd5e824faca"
-         class="btn btn-primary btn-lg animate__animated animate__fadeIn" style="animation-delay: 0.6s;">
-        Get in Touch
-      </a>
+      <div class="d-flex justify-content-center gap-3 flex-column flex-sm-row align-items-center">
+        <a href="https://us9.list-manage.com/contact-form?u=90f3e57ae81e71dbf67c9884e&form_id=37207363f4b3cd87ba2facd5e824faca"
+           class="btn btn-primary btn-lg animate__animated animate__fadeIn" style="animation-delay: 0.6s;">
+          Get in Touch
+        </a>
+
+        <!-- Hero search form (redirects to catalogue with query param) -->
+        <form id="heroSearchForm" class="hero-search animate__animated animate__fadeIn" style="animation-delay: 0.6s;" role="search">
+          <input id="heroSearchInput" type="search" class="form-control form-control-lg" placeholder="Search laptops by model or specs (e.g. ThinkPad, Ryzen, 16GB)" aria-label="Search laptops" />
+          <button type="submit" class="btn btn-light btn-lg">Search</button>
+        </form>
+      </div>
     </div>
   </section>
 

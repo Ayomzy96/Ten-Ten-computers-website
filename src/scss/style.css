@@ -97,6 +97,36 @@ body {
   min-height: 50vh;
 }
 
+/* Hero search layout */
+.hero-search {
+  max-width: 780px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.hero-search .form-control {
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: 8px;
+}
+.hero-search .btn {
+  flex: 0 0 auto;
+  border-radius: 8px;
+}
+
+/* Product card image height: ensure consistent crops */
+.product-card .carousel-container {
+  min-height: 200px;
+  max-height: 320px;
+}
+.product-card .carousel-container img,
+.product-card .carousel-container .carousel-item img {
+  height: 220px !important;
+  object-fit: cover !important;
+}
+
 /* About Section */
 #about {
   min-height: 50vh;
@@ -382,6 +412,11 @@ body {
     aspect-ratio: 1 / 1; /* keep tile ratio, adjust if needed */
     max-height: 320px;
     min-height: 160px;
+  }
+  .hero-search {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 12px;
   }
 
   .carousel-item img,
